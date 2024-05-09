@@ -1,5 +1,7 @@
 package kr.easw.lesson07;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -23,9 +25,11 @@ public class ScoreCalculatorWithList {
             System.out.println("Enter the subject and score.");
             System.out.print("> ");
             String subject = scanner.next();
+
             if (subject.equals("exit")) {
                 break;
             }
+
             int score = scanner.nextInt();
             calculator.addScore(subject, score);
         }
@@ -40,24 +44,35 @@ public class ScoreCalculatorWithList {
         int getSubjectCount();
     }
 
+
     static class CalculatorImpl implements Calculator {
+        private final List<Score> scores = new ArrayList<>();
 
         @Override
         public void addScore(String subject, int score) {
-            throw new RuntimeException("이곳에 코드를 작성하세요.");
+            scores.add(new Score(subject, score));
         }
 
         @Override
         public double getAverage() {
-            throw new RuntimeException("이곳에 코드를 작성하세요.");
+            if (scores.isEmpty()) {
+                throw new RuntimeException("오류!");
+            }
+            int total = 0;
+            for (Score score : scores) {
+                total += score.getScore();
+            }
+            return (double) total / scores.size();
         }
 
         @Override
         public int getSubjectCount() {
-            throw new RuntimeException("이곳에 코드를 작성하세요.");
+            if (scores.isEmpty()) {
+                throw new RuntimeException("오류!");
+            }
+            return scores.size();
         }
     }
-
     static class Score {
         private final String subject;
         private final int score;
